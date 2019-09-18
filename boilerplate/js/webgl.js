@@ -1,9 +1,9 @@
 function initWebGl() {
 	let vertexShaderSource, fragmentShaderSource;
-	loadResource('./shaders/vertexShader.glsl')
+	loadResource('')
 	.then((result) => {
 		vertexShaderSource = result;
-		return loadResource('./shaders/fragmentShader.glsl');
+		return loadResource('');
 	})
 	.then((result) => {
 		fragmentShaderSource = result;
@@ -17,13 +17,7 @@ function initWebGl() {
 var gl, program, 
 	vertexArray = [
 	//  X     Y    Z    R    G    B
-		 0.0,  0.5, 0.0, 1.0, 0.0, 0.0,
-		-0.5,  0.0, 0.0, 1.0, 0.0, 0.0,
-		 0.5,  0.0, 0.0, 1.0, 0.0, 0.0,
 
-		-0.5,  0.5, 0.0, 0.0, 1.0, 0.0,
-		 0.5,  0.5, 0.0, 0.0, 1.0, 0.0,
-		 0.0,  0.0,-0.5, 0.0, 1.0, 0.0,
 	];
 
 function startWebGl(vertexShaderSource, fragmentShaderSource) {
