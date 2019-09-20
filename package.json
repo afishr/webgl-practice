@@ -1,0 +1,22 @@
+{
+  "name": "webgl_practice",
+  "version": "1.0.0",
+  "description": "congrats, u found my repo!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afishr/webgl-practice.git"
+  },
+  "author": "Alexander Calugari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/afishr/webgl-practice/issues"
+  },
+  "homepage": "https://github.com/afishr/webgl-practice#readme",
+  "dependencies": {
+    "gl-matrix": "^3.1.0"
+  }
+}
