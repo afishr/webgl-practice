@@ -14,79 +14,9 @@ function initWebGl() {
 	})
 }
 
-var gl, program, canvas,
-	vertexArray = [
-	//X      Y     Z      R    G    B
-	 0.0,  0.5, 0.0,   1.0, 1.0, 0.0,
-	-0.5, -0.5, 0.0,   0.7, 0.0, 1.0,
-	 0.5, -0.5, 0.0,   0.1, 1.0, 0.6,
-	];
+var gl, program, canvas;
 
-var boxVertices = 
-[ // X, Y, Z           R, G, B
-	// Top
-	-1.0, 1.0, -1.0,   0.5, 0.5, 0.5,
-	-1.0, 1.0, 1.0,    0.5, 0.5, 0.5,
-	1.0, 1.0, 1.0,     0.5, 0.5, 0.5,
-	1.0, 1.0, -1.0,    0.5, 0.5, 0.5,
-
-	// Left
-	-1.0, 1.0, 1.0,    0.75, 0.25, 0.5,
-	-1.0, -1.0, 1.0,   0.75, 0.25, 0.5,
-	-1.0, -1.0, -1.0,  0.75, 0.25, 0.5,
-	-1.0, 1.0, -1.0,   0.75, 0.25, 0.5,
-
-	// Right
-	1.0, 1.0, 1.0,    0.25, 0.25, 0.75,
-	1.0, -1.0, 1.0,   0.25, 0.25, 0.75,
-	1.0, -1.0, -1.0,  0.25, 0.25, 0.75,
-	1.0, 1.0, -1.0,   0.25, 0.25, 0.75,
-
-	// Front
-	1.0, 1.0, 1.0,    1.0, 0.0, 0.15,
-	1.0, -1.0, 1.0,    1.0, 0.0, 0.15,
-	-1.0, -1.0, 1.0,    1.0, 0.0, 0.15,
-	-1.0, 1.0, 1.0,    1.0, 0.0, 0.15,
-
-	// Back
-	1.0, 1.0, -1.0,    0.0, 1.0, 0.15,
-	1.0, -1.0, -1.0,    0.0, 1.0, 0.15,
-	-1.0, -1.0, -1.0,    0.0, 1.0, 0.15,
-	-1.0, 1.0, -1.0,    0.0, 1.0, 0.15,
-
-	// Bottom
-	-1.0, -1.0, -1.0,   0.5, 0.5, 1.0,
-	-1.0, -1.0, 1.0,    0.5, 0.5, 1.0,
-	1.0, -1.0, 1.0,     0.5, 0.5, 1.0,
-	1.0, -1.0, -1.0,    0.5, 0.5, 1.0,
-];
-
-var boxIndices =
-[
-	// Top
-	0, 1, 2,
-	0, 2, 3,
-
-	// Left
-	5, 4, 6,
-	6, 4, 7,
-
-	// Right
-	8, 9, 10,
-	8, 10, 11,
-
-	// Front
-	13, 12, 14,
-	15, 14, 12,
-
-	// Back
-	16, 17, 18,
-	16, 18, 19,
-
-	// Bottom
-	21, 20, 22,
-	22, 20, 23
-];
+var data = prepareVertices();
 
 function startWebGl(vertexShaderSource, fragmentShaderSource) {
 	canvas = document.getElementById('gl-canvas');
@@ -112,13 +42,11 @@ function startWebGl(vertexShaderSource, fragmentShaderSource) {
 function draw() {
 	let vertexBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(boxVertices), gl.STATIC_DRAW);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data.mainVertices), gl.STATIC_DRAW);
 
 	let indexBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(boxIndices), gl.STATIC_DRAW);
-
-	let verticesNumber = vertexArray.length / 6;
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(data.mainIndices), gl.STATIC_DRAW);
 
 	gl.enable(gl.DEPTH_TEST);
 
@@ -149,36 +77,35 @@ function draw() {
 	let matWorldUniformLocation = gl.getUniformLocation(program, 'matWorld');
 	let matViewUniformLocation = gl.getUniformLocation(program, 'matView');
 	let matProjUniformLocation = gl.getUniformLocation(program, 'matProjection');
+	let identity = new Float32Array(16);
 	let worldMatrix = new Float32Array(16);
 	let viewMatrix = new Float32Array(16);
 	let projMatrix = new Float32Array(16);
 
 	glMatrix.mat4.identity(worldMatrix);
-	glMatrix.mat4.lookAt(viewMatrix, [0, 0, -5], [0, 0, 0], [0, 1, 0]);
+	glMatrix.mat4.lookAt(viewMatrix, [0, 0, -7], [0, 0, 0], [0, 1, 0]);
 	glMatrix.mat4.perspective(projMatrix, glMatrix.glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
-		
+
 	gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, worldMatrix);
 	gl.uniformMatrix4fv(matViewUniformLocation, gl.FALSE, viewMatrix);
 	gl.uniformMatrix4fv(matProjUniformLocation, gl.FALSE, projMatrix);
 
 	let angle = 0;
-	let identity = new Float32Array(16);
 	glMatrix.mat4.identity(identity);
 
 	function loop() {
 
-		angle = 3.9;
-		// angle = performance.now() / 1000 / 6 * 2 * Math.PI;
-		
-		glMatrix.mat4.rotate(worldMatrix, identity, angle, [1, 1, 0]);
+		angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+
+		glMatrix.mat4.rotate(worldMatrix, identity, angle, [0, 1, 0]);
 
 		gl.uniformMatrix4fv(matWorldUniformLocation, gl.FALSE, worldMatrix);
 
 		gl.clearColor(0.75, 0.9, 1.0, 1.0);
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-		gl.drawElements(gl.TRIANGLES, boxIndices.length, gl.UNSIGNED_SHORT, 0);
+		gl.drawElements(gl.TRIANGLES, data.mainIndices.length, gl.UNSIGNED_SHORT, 0);
 
-		// requestAnimationFrame(loop);
+		requestAnimationFrame(loop);
 	}
 	requestAnimationFrame(loop);
 
