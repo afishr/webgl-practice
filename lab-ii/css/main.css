@@ -1,10 +1,45 @@
 body {
 	margin: 0;
 	padding: 0;
+	display: flex;
 	overflow: hidden;
+	font-family: Merriweather, sans-serif;
+	background-color: #efefef;
 }
 
 #gl-canvas {
-	width: 100vw;
+	/* width: 100vw; */
 	height: 100vh;
+}
+
+.ui {
+	padding: 10px;
+}
+
+.list-objects {
+	margin-top: 10px;
+}
+
+.section__title {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+label {
+	margin: 0;
+	padding: 0;
+	vertical-align: middle;
+}
+
+input {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	vertical-align: middle;
+	margin-right: 30px;
+}
+
+input[type="button"] {
+	font-size: 1.1em;
 }

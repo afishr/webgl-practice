@@ -89,31 +89,3 @@ var crystalIndices = [
 	1, 2, 5,
 	2, 3, 5
 ];
-
-function prepareVertices() {
-	let mainVertices = [];
-	mainVertices = mainVertices.concat(cubeVertices, pyramidVertices, crystalVertices);
-	
-	let offset1 = cubeVertices.length / 6;
-	let offset2 = (pyramidVertices.length / 6) + offset1;
-
-	console.log(offset1);
-	console.log(offset2);
-	
-
-	for (let i = 0; i < pyramidIndices.length; i++) {
-		pyramidIndices[i] += offset1;
-	}
-
-	for (let i = 0; i < crystalIndices.length; i++) {
-		crystalIndices[i] += offset2;
-	}
-
-	let mainIndices = [];
-	mainIndices = mainIndices.concat(cubeIndices, pyramidIndices, crystalIndices);
-
-	return {
-		mainVertices,
-		mainIndices
-	}
-}

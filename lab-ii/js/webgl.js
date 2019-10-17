@@ -1,14 +1,19 @@
-class GlObject
-{
+class GlObject {
 	constructor(vertices, indicies, program) {
 		this.program = program;
 
 		this.translation = [0, 0, 0];
 		this.scale = [1, 1, 1];
-		this.rotationAngle = 0;
-		this.rotationMatrix = [1, 1, 1];
+		this.rotation = [0, 0, 0];
 		this.vertices = vertices;
 		this.indicies = indicies;
+
+		this.center = [0, 0, 0];
+		this.cameraPos = [0, 0, -10];
+		this.cameraRot = [0, 0, 0];
+		this.near = 0.1;
+		this.far = 1000.0;
+		this.fov = 45;
 
 		this.vertexBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
@@ -39,13 +44,18 @@ class GlObject
 	}
 
 	draw() {
-		glMatrix.mat4.perspective(this.projMatrix, glMatrix.glMatrix.toRadian(45), canvas.clientWidth / canvas.clientHeight, 0.1, 1000.0);
+		glMatrix.mat4.perspective(this.projMatrix, glMatrix.glMatrix.toRadian(this.fov), canvas.clientWidth / canvas.clientHeight, this.near, this.far);
+		glMatrix.mat4.lookAt(this.viewMatrix, this.cameraPos, this.center, [0, 1, 0]);
+		glMatrix.mat4.rotate(this.viewMatrix, this.viewMatrix, this.cameraRot[0], [1, 0, 0]);
+		glMatrix.mat4.rotate(this.viewMatrix, this.viewMatrix, this.cameraRot[1], [0, 1, 0]);
+		glMatrix.mat4.rotate(this.viewMatrix, this.viewMatrix, this.cameraRot[2], [0, 0, 1]);
 
-		glMatrix.mat4.lookAt(this.viewMatrix, [0, 0, -15], [0, 0, 0], [0, 1, 0]);
-		glMatrix.mat4.rotate(this.viewMatrix, this.viewMatrix, this.rotationAngle, [0, 1, 0]);
-		glMatrix.mat4.translate(this.worldMatrix, this.identity, this.translation);
-		
-		glMatrix.mat4.rotate(this.worldMatrix, this.worldMatrix, this.rotationAngle, [0, 0, 1]);
+		glMatrix.mat4.scale(this.worldMatrix, this.identity, this.scale);
+		glMatrix.mat4.translate(this.worldMatrix, this.worldMatrix, this.translation);
+		glMatrix.mat4.rotate(this.worldMatrix, this.worldMatrix, this.rotation[0], [1, 0, 0]);
+		glMatrix.mat4.rotate(this.worldMatrix, this.worldMatrix, this.rotation[1], [0, 1, 0]);
+		glMatrix.mat4.rotate(this.worldMatrix, this.worldMatrix, this.rotation[2], [0, 0, 1]);
+
 		
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
 		gl.vertexAttribPointer(
@@ -85,9 +95,8 @@ class GlObject
 		this.scale = [x, y, z];
 	}
 
-	setRotation(angle, x, y, z) {
-		this.rotationAngle = angle;
-		this.rotationMatrix = [x, y, z];
+	setRotation(x, y, z) {
+		this.rotation = [x, y, z];
 	}
 }
 
@@ -109,8 +118,6 @@ function initWebGl() {
 
 var gl, program, canvas, toDraw = [];
 
-// var data = prepareVertices();
-
 function startWebGl(vertexShaderSource, fragmentShaderSource) {
 	canvas = document.getElementById('gl-canvas');
 	gl = canvas.getContext('webgl');
@@ -120,9 +127,13 @@ function startWebGl(vertexShaderSource, fragmentShaderSource) {
 		return;
 	}
 
-	canvas.width = window.innerWidth
+	/* canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	gl.viewport(0, 0, window.innerWidth, window.innerHeight);
+	gl.viewport(0, 0, window.innerWidth, window.innerHeight); */
+
+	canvas.width = 1280;
+	canvas.height = window.innerHeight;
+	gl.viewport(0, 0, 1280, innerHeight);
 
 	gl.enable(gl.DEPTH_TEST);
 
@@ -134,8 +145,7 @@ function startWebGl(vertexShaderSource, fragmentShaderSource) {
 	program = createProgram(gl, vertexShader, fragmentShader);
 	gl.useProgram(program);
 
-
-	let a = new GlObject(cubeVertices, cubeIndices, program);
+/* 	let a = new GlObject(cubeVertices, cubeIndices, program);
 	a.setTranslation(-4, 0, 0);
 
 	let b = new GlObject(crystalVertices, crystalIndices, program);
@@ -144,19 +154,18 @@ function startWebGl(vertexShaderSource, fragmentShaderSource) {
 	let c = new GlObject(pyramidVertices, pyramidIndices, program);
 	c.setTranslation(4, 0, 0);
 
-	toDraw.push(a, b, c);
+	toDraw.push(a, b, c); */
 
 	loop();
 }
 
-angle = 0;
 function loop() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+	//let angle = performance.now() / 1000 / 6 * 2 * Math.PI;
 
-	toDraw.forEach(e => {
-		e.setRotation(angle, 0, 1, 0);
-	});
+	/* toDraw.forEach(e => {
+		e.setRotation(angle, angle * 2, angle * 5);
+	}); */
 
 	toDraw.forEach(e => {
 		e.draw();
