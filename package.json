@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/afishr/webgl-practice#readme",
   "dependencies": {
-    "gl-matrix": "^3.1.0"
+    "gl-matrix": "^3.1.0",
+    "philogl": "^1.6.1"
   },
   "devDependencies": {}
 }

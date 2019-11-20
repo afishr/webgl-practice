@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="css/main.css">
+	<title>WebGl — Laboratory #2</title>
+</head>
+<body>
+	<canvas id="gl-canvas">
+		Your browser does not support canvas. U mad bro.
+	</canvas>
+	<!-- <div class="ui">
+		<div class="add-buttons">
+			<input class="add-button" id="add-cube" type="button" value="Add cube">
+			<input class="add-button" id="add-pyramid" type="button" value="Add pyramid">
+			<input class="add-button" id="add-crystal" type="button" value="Add crystal">
+			<input class="delete-button" id="delete" type="button" value="Delete object">
+
+		</div>
+		<div class="list-objects">
+			<select name="list-objects" id="list-objects">
+			</select>
+		</div>
+		<div class="controls">
+			<h3>Object controls</h3>
+			<input class="reset-button" id="reset" type="button" value="Reset">
+			<div class="section__title">Translate</div>
+			<label for="translate-x" class="control-label">X</label>
+			<input value=50 class="control-translate" type="range" name="translate-x" id="translate-x">
+			<label for="translate-y" class="control-label">Y</label>
+			<input value=50 class="control-translate" type="range" name="translate-y" id="translate-y">
+			<label for="translate-z" class="control-label">Z</label>
+			<input value=50 class="control-translate" type="range" name="translate-z" id="translate-z">
+
+			<div class="section__title">Rotate</div>
+			<label for="rotate-x" class="control-label">X</label>
+			<input value=0 class="control-rotate" type="range" name="rotate-x" id="rotate-x">
+			<label for="rotate-y" class="control-label">Y</label>
+			<input value=0 class="control-rotate" type="range" name="rotate-y" id="rotate-y">
+			<label for="rotate-z" class="control-label">Z</label>
+			<input value=0 class="control-rotate" type="range" name="rotate-z" id="rotate-z">
+
+			<div class="section__title">Scale</div>
+			<label for="scale-x" class="control-label">X</label>
+			<input value=10 class="control-scale" type="range" name="scale-x" id="scale-x">
+			<label for="scale-y" class="control-label">Y</label>
+			<input value=10 class="control-scale" type="range" name="scale-y" id="scale-y">
+			<label for="scale-z" class="control-label">Z</label>
+			<input value=10 class="control-scale" type="range" name="scale-z" id="scale-z">
+
+			<h3>Camera controls</h3>
+
+			<div class="section__title">Camera move</div>
+			<label for="camera-mov-x" class="control-label">X</label>
+			<input value=50 class="control-camera-mov" type="range" name="camera-mov-x" id="camera-mov-x">
+			<label for="camera-mov-y" class="control-label">Y</label>
+			<input value=50 class="control-camera-mov" type="range" name="camera-mov-y" id="camera-mov-y">
+			<label for="camera-mov-z" class="control-label">Z</label>
+			<input value=60 class="control-camera-mov" type="range" name="camera-mov-z" id="camera-mov-z">
+
+			<div class="section__title">Camera rotation</div>
+			<label for="camera-rot-x" class="control-label">X</label>
+			<input value=0 class="control-camera-rot" type="range" name="camera-rot-x" id="camera-rot-x">
+			<label for="camera-rot-y" class="control-label">Y</label>
+			<input value=0 class="control-camera-rot" type="range" name="camera-rot-y" id="camera-rot-y">
+			<label for="camera-rot-z" class="control-label">Z</label>
+			<input value=0 class="control-camera-rot" type="range" name="camera-rot-z" id="camera-rot-z">
+
+			<div class="section-title">Perspective</div>
+			<label for="camera-fov" class="control-label">FOV</label>
+			<input value=12.5 class="control-camera-per" type="range" name="camera-fov" id="camera-fov">
+			<label for="camera-near" class="control-label">Near</label>
+			<input value=0.01 step=0.1 class="control-camera-per" type="range" name="camera-near" id="camera-near">
+			<label for="camera-far" class="control-label">Far</label>
+			<input value=100 class="control-camera-per" type="range" name="camera-far" id="camera-far">
+		</div>
+	</div> -->
+	<script src="/node_modules/gl-matrix/gl-matrix.js"></script>
+	<script src="/node_modules/philogl/build/PhiloGL.js"></script>
+	<script src="js/MV.js"></script>
+	<script src="js/MV2.js"></script>
+	<script src="js/webgl-utils.js"></script>
+	<script src="js/vertices.js"></script>
+	<script src="js/resource.js"></script>
+	<script src="js/webgl.js"></script>
+	<!-- <script src="js/controls.js"></script> -->
+</body>
+</html>
