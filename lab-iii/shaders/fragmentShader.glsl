@@ -3,8 +3,20 @@ precision mediump float;
 struct DirectionalLight
 {
 	vec3 direction;
-	vec3 color;
+	float distanc;
+	float shiness;
 };
+
+uniform DirectionalLight flashLight;
+uniform DirectionalLight sun;
+uniform DirectionalLight lamp;
+uniform vec3 ambientLightIntesity;
+uniform vec3 diffProduct0;
+uniform vec3 diffProduct1;
+uniform vec3 diffProduct2;
+uniform vec3 specProduct0;
+uniform vec3 specProduct1;
+uniform vec3 specProduct2;
 
 varying vec3 fragColor;
 varying vec3 fragNormal;
@@ -12,20 +24,21 @@ varying vec3 fragPosition;
 
 
 void main(){
-	DirectionalLight flashLight;
-	flashLight.direction = normalize(vec3(0.0, 0.0, -1.0));
-	flashLight.color = vec3(1, 1, 0);
-	vec3 ambientLightIntesity = vec3(0.2, 0.2, 0.2);
+
 	// vec3 lightIntensity = ambientLightIntesity + flashLight.color * max(dot(fragNormal, flashLight.direction), 0.0);
 
+  float diffuseValue0 = max(dot(normalize(flashLight.direction), fragNormal), 0.0) / flashLight.distanc; 
+  float specularValue0 = pow(max(dot(normalize(flashLight.direction), fragNormal), 0.0), flashLight.shiness);
 
-  vec3 lightVector0 = flashLight.direction;
-  
-  float diffuseValue0 = max(dot(lightVector0, fragNormal), 0.0) / 20.0; 
+	float diffuseValue1 = max(dot(normalize(sun.direction), fragNormal), 0.0) / sun.distanc; 
+  float specularValue1 = pow(max(dot(normalize(sun.direction), fragNormal), 0.0), sun.shiness);  
 
-  float specularValue0 = pow(max(dot(lightVector0, fragNormal), 0.0), 20.0); 
+	float diffuseValue2 = max(dot(normalize(lamp.direction), fragNormal), 0.0) / lamp.distanc; 
+  float specularValue2 = pow(max(dot(normalize(lamp.direction), fragNormal), 0.0), lamp.shiness);  
 
-	vec3 lightIntensity = vec3(1, 1, 1) * diffuseValue0 + (flashLight.color * vec3(1, 1, 1)) * specularValue0 + ambientLightIntesity;
+	vec3 lightIntensity = diffProduct0 * diffuseValue0 + diffProduct1 * diffuseValue1 + diffProduct2 * diffuseValue2
+	 	+ specProduct0 * specularValue0 + specProduct1 * specularValue1 + specProduct2 * specularValue2
+		+ ambientLightIntesity;
 
 
 	gl_FragColor = vec4(fragColor * lightIntensity, 1.0);

@@ -50,6 +50,28 @@ class GlObject {
 		this.matWorldUniformLocation = gl.getUniformLocation(program, 'matWorld');
 		this.matViewUniformLocation = gl.getUniformLocation(program, 'matView');
 		this.matProjUniformLocation = gl.getUniformLocation(program, 'matProjection');
+
+		this.ambientUniformLocation = gl.getUniformLocation(program, 'ambientLightIntesity');
+
+		this.diff0UniformLocation = gl.getUniformLocation(program, 'diffProduct0');
+		this.diff1UniformLocation = gl.getUniformLocation(program, 'diffProduct1');
+		this.diff2UniformLocation = gl.getUniformLocation(program, 'diffProduct2');
+
+		this.spec0UniformLocation = gl.getUniformLocation(program, 'specProduct0');
+		this.spec1UniformLocation = gl.getUniformLocation(program, 'specProduct1');
+		this.spec2UniformLocation = gl.getUniformLocation(program, 'specProduct2');
+
+		this.sunDirUniformLocation = gl.getUniformLocation(program, 'sun.direction');
+		this.sunDisUniformLocation = gl.getUniformLocation(program, 'sun.distanc');
+		this.sunShiUniformLocation = gl.getUniformLocation(program, 'sun.shiness');
+
+		this.lampDirUniformLocation = gl.getUniformLocation(program, 'lamp.direction');
+		this.lampDisUniformLocation = gl.getUniformLocation(program, 'lamp.distanc');
+		this.lampShiUniformLocation = gl.getUniformLocation(program, 'lamp.shiness');
+
+		this.flashLightDirUniformLocation = gl.getUniformLocation(program, 'flashLight.direction');
+		this.flashLightDisUniformLocation = gl.getUniformLocation(program, 'flashLight.distanc');
+		this.flashLightShiUniformLocation = gl.getUniformLocation(program, 'flashLight.shiness');
 	}
 
 	draw() {
@@ -102,6 +124,27 @@ class GlObject {
 		gl.uniformMatrix4fv(this.matWorldUniformLocation, gl.FALSE, this.worldMatrix);
 		gl.uniformMatrix4fv(this.matViewUniformLocation, gl.FALSE, this.viewMatrix);
 		gl.uniformMatrix4fv(this.matProjUniformLocation, gl.FALSE, this.projMatrix);
+
+		gl.uniform3f(this.ambientUniformLocation, 0.3, 0.3, 0.3);
+
+		gl.uniform3f(this.flashLightDirUniformLocation, controls.l1x, controls.l1y, controls.l1z);		
+		gl.uniform3f(this.diff0UniformLocation, ...mult( vec3(...toRGB(controls.l1diff)), vec3(...toRGB(controls.mdiff)) ));
+		gl.uniform3f(this.spec0UniformLocation, ...mult( vec3(...toRGB(controls.l1spec)), vec3(...toRGB(controls.mspec)) ));
+		gl.uniform1f(this.flashLightDisUniformLocation, controls.l1dst);
+		gl.uniform1f(this.flashLightShiUniformLocation, controls.l1shns);
+
+		gl.uniform3f(this.sunDirUniformLocation, controls.l2x, controls.l2y, controls.l2z);
+		gl.uniform3f(this.diff1UniformLocation, ...mult( vec3(...toRGB(controls.l2diff)), vec3(...toRGB(controls.mdiff)) ));
+		gl.uniform3f(this.spec1UniformLocation, ...mult( vec3(...toRGB(controls.l2spec)), vec3(...toRGB(controls.mspec)) ));
+		gl.uniform1f(this.sunDisUniformLocation, controls.l2dst);
+		gl.uniform1f(this.sunShiUniformLocation, controls.l2shns);
+
+		gl.uniform3f(this.lampDirUniformLocation, controls.l3x, controls.l3y, controls.l3z);
+		gl.uniform3f(this.diff2UniformLocation, ...mult( vec3(...toRGB(controls.l3diff)), vec3(...toRGB(controls.mdiff)) ));
+		gl.uniform3f(this.spec2UniformLocation, ...mult( vec3(...toRGB(controls.l3spec)), vec3(...toRGB(controls.mspec)) ));
+		gl.uniform1f(this.lampDisUniformLocation, controls.l3dst);
+		gl.uniform1f(this.lampShiUniformLocation, controls.l3shns);
+
 
 		gl.drawArrays(gl.TRIANGLES, 0, this.obj.vertices.length / 3);		
 	}
@@ -200,7 +243,7 @@ function startWebGl(vertexShaderSource, fragmentShaderSource) {
 
 	gl.enable(gl.DEPTH_TEST);
 
-	gl.clearColor(0.75, 0.9, 1.0, 1.0);
+	gl.clearColor(0.2, 0.3, 0.3, 1.0);
 
 	let vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
 	let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
@@ -216,8 +259,7 @@ function startWebGl(vertexShaderSource, fragmentShaderSource) {
 	let c = new GlObject(pyramidVertices, pyramidIndices, program);
 	c.setTranslation(4, 0, 0);*/
 
-toDraw.push(a);
-
+	toDraw.push(a);
 	loop();
 }
 
@@ -227,7 +269,7 @@ function loop() {
 	let angle = performance.now() / 1000 / 6 * 2 * Math.PI;
 	
 	toDraw.map(e => {
-		e.setRotation(-angle, angle, 0);
+		e.setRotation(0, angle/4, 0);
 	});
 
 	toDraw.map(e => {
@@ -238,5 +280,6 @@ function loop() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+	initControls();	
 	initWebGl();
 })

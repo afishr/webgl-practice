@@ -83,7 +83,7 @@ var sphere = {
 	inverse: true
 }
 
-var atom = new PhiloGL.O3D.Sphere({ nlat: 100, nlong: 100, radius: 2, colors: [1, 1, 1, 1] });
+var atom = new PhiloGL.O3D.Sphere({ nlat: 145, nlong: 145, radius: 2.5, colors: [1, 0, 0, 1] });
 
 sphere.points = atom.vertices;
 sphere.normals = atom.normals;
