@@ -76,7 +76,7 @@ cube.vertices = [
 	...cube.points[6], ...cube.points[5], ...cube.points[8],
 ]
 
-var sphere = {
+/* var sphere = {
 	points: [],
 	color: [],
 	vertices: [],
@@ -99,4 +99,4 @@ for (let index = 0; index < atom.indices.length; index++) {
 	sphere.vertices.push( sphere.points[element * 3] );
 	sphere.vertices.push( sphere.points[element * 3 + 1] );
 	sphere.vertices.push( sphere.points[element * 3 + 2] );
-}
+} */
