@@ -9,8 +9,6 @@ function initControls() {
 			controls[e.target.id] = e.target.value;
 		});
 	}	
-
-	// staticMove();
 }
 
 function toRGB(hex) {
@@ -19,17 +17,13 @@ function toRGB(hex) {
 	});
 }
 
-function staticMove() {
-	let angle = performance.now() / 1000 / 6 * 2 * Math.PI;
-
+function staticMove(angle) {
 	controls.l1x = Math.sin(angle);
-	controls.l1y = Math.sin(angle);
+	controls.l1y = Math.sin(angle * 2);
 
-	controls.l2x = Math.cos(angle * 2);
-	controls.l2y = Math.cos(angle * 2);
+	controls.l2x = Math.sin(angle);
+	controls.l2y = -Math.sin(angle * 2);
 
-	controls.l3x = Math.sin(angle * 2);
-	controls.l3y = Math.cos(angle * 2);
-
-	requestAnimationFrame(staticMove);
+	controls.l3x = Math.sin(-angle * 2);
+	controls.l3y = Math.cos(-angle * 2);
 }

@@ -121,11 +121,13 @@ class GlObject {
 		);
 		gl.enableVertexAttribArray(this.normalAttribLocation);
 
+		console.log(this.projMatrix);
+		
 		gl.uniformMatrix4fv(this.matWorldUniformLocation, gl.FALSE, this.worldMatrix);
 		gl.uniformMatrix4fv(this.matViewUniformLocation, gl.FALSE, this.viewMatrix);
 		gl.uniformMatrix4fv(this.matProjUniformLocation, gl.FALSE, this.projMatrix);
 
-		gl.uniform3f(this.ambientUniformLocation, 0.3, 0.3, 0.3);
+		gl.uniform3f(this.ambientUniformLocation, 0.2, 0.2, 0.2);
 
 		gl.uniform3f(this.flashLightDirUniformLocation, controls.l1x, controls.l1y, controls.l1z);		
 		gl.uniform3f(this.diff0UniformLocation, ...mult( vec3(...toRGB(controls.l1diff)), vec3(...toRGB(controls.mdiff)) ));
@@ -267,6 +269,8 @@ function loop() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
 	let angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+
+	staticMove(angle);
 	
 	toDraw.map(e => {
 		e.setRotation(0, angle/4, 0);
