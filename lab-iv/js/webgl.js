@@ -1,7 +1,7 @@
 var gl, program, canvas, toDraw = [];
 
 function initWebGl() {
-	let vertexShaderSource, fragmentShaderSource;
+	let vertexShaderSource, fragmentShaderSource, externalMesh;
 	loadResource('./shaders/vertexShader.glsl')
 		.then(result => {
 			vertexShaderSource = result;
@@ -12,8 +12,8 @@ function initWebGl() {
 			return loadMeshes('./obj/darkDragon.obj');
 		})
 		.then(result => {
-			kik = result.model;
-			return startWebGl(vertexShaderSource, fragmentShaderSource);
+			externalMesh = result.model;
+			return startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh);
 		})
 		.catch(err => {
 			console.error(err);
@@ -21,7 +21,7 @@ function initWebGl() {
 }
 
 
-function startWebGl(vertexShaderSource, fragmentShaderSource) {
+function startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh) {
 	canvas = document.getElementById('gl-canvas');
 	gl = canvas.getContext('webgl');
 
@@ -30,13 +30,13 @@ function startWebGl(vertexShaderSource, fragmentShaderSource) {
 		return;
 	}
 
-	/* canvas.width = window.innerWidth;
+	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	gl.viewport(0, 0, window.innerWidth, window.innerHeight); */
+	gl.viewport(0, 0, window.innerWidth, window.innerHeight);
 
-	canvas.width = 1280;
+	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	gl.viewport(0, 0, 1280, innerHeight);
+	gl.viewport(0, 0, innerWidth, innerHeight);
 
 	gl.enable(gl.DEPTH_TEST);
 
@@ -48,7 +48,7 @@ function startWebGl(vertexShaderSource, fragmentShaderSource) {
 	program = createProgram(gl, vertexShader, fragmentShader);
 	gl.useProgram(program);	
 
-	let a = new GlObject(kik, program);
+	let a = new GlObject(externalMesh, program);
 
 	toDraw.push(a);
 	loop();

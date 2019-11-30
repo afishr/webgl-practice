@@ -9,15 +9,11 @@ class GlObject {
 		this.colors = [1, 0, 0];
 
 		this.center = [0, 0, 0];
-		this.cameraPos = [0, 0, -10];
+		this.cameraPos = [0, 0, -13];
 		this.cameraRot = [0, 0, 0];
 		this.near = 0.1;
 		this.far = 1000.0;
 		this.fov = 45;
-
-		console.log(mesh);
-
-		// OBJ.initMeshBuffers(gl, mesh);
 
 		this.indexBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
