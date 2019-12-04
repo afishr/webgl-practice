@@ -57,7 +57,14 @@
  * visible.
  */
 
+function toRGB(hex) {
+  return hex.match(/[A-Za-z0-9]{2}/g).map((v) => {
+    return parseInt(v, 16) / 255 
+  });
+}
+
 WebGLUtils = function() {
+
 
 /**
  * Creates the HTLM for a failure message

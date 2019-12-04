@@ -100,3 +100,9 @@ for (let index = 0; index < atom.indices.length; index++) {
 	sphere.vertices.push( sphere.points[element * 3 + 1] );
 	sphere.vertices.push( sphere.points[element * 3 + 2] );
 } */
+
+function toRGB(hex) {
+  return hex.match(/[A-Za-z0-9]{2}/g).map((v) => {
+    return parseInt(v, 16) / 255 
+  });
+}

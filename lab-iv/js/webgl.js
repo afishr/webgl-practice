@@ -71,6 +71,5 @@ function loop() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	initControls();	
 	initWebGl();
 })
