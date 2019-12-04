@@ -6,7 +6,16 @@ class GlObject {
 		this.translation = [0, 0, 0];
 		this.scale = [1, 1, 1];
 		this.rotation = [0, 0, 0];
-		this.colors = [1, 0, 0];
+		this.colors = [
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+		];
 
 		this.center = [0, 0, 0];
 		this.cameraPos = [0, 0, -13];
@@ -29,7 +38,7 @@ class GlObject {
 
 		this.normalBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);				
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertexNormals), gl.STATIC_DRAW);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.mesh.vertexNormals), gl.STATIC_DRAW);
 
 		this.identity = new Float32Array(16);
 		this.worldMatrix = new Float32Array(16);
@@ -110,12 +119,12 @@ class GlObject {
 		gl.uniformMatrix4fv(this.matViewUniformLocation, gl.FALSE, this.viewMatrix);
 		gl.uniformMatrix4fv(this.matProjUniformLocation, gl.FALSE, this.projMatrix);
 
-		gl.uniform3f(this.ambientUniformLocation, 0.2, 0.2, 0.2);
+		gl.uniform3f(this.ambientUniformLocation, 0.0, 0.0, 0.0);
 
 		gl.uniform3f(this.diff0UniformLocation, ...mult( vec3(...toRGB('#ffffff')), vec3(...toRGB('#ffffff')) ));
 		gl.uniform3f(this.spec0UniformLocation, ...mult( vec3(...toRGB('#ffffff')), vec3(...toRGB('#ffffff')) ));
 
-		gl.uniform3f(this.sunDirUniformLocation, -1, 0, -1);
+		gl.uniform3f(this.sunDirUniformLocation, 0, 0, -1);
 		gl.uniform1f(this.sunDisUniformLocation, 5);
 		gl.uniform1f(this.sunShiUniformLocation, 10);
 

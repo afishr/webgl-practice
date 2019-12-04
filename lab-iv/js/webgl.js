@@ -9,7 +9,7 @@ function initWebGl() {
 		})
 		.then(result => {
 			fragmentShaderSource = result;
-			return loadMeshes('./obj/darkDragon.obj');
+			return loadMeshes('./obj/cube.obj');
 		})
 		.then(result => {
 			externalMesh = result.model;
