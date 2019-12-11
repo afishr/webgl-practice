@@ -1,7 +1,7 @@
 var gl, program, canvas, toDraw = [];
 
 function initWebGl() {
-	let vertexShaderSource, fragmentShaderSource, externalMesh;
+	let vertexShaderSource, fragmentShaderSource, externalMesh, externalTexture;
 	loadResource('./shaders/vertexShader.glsl')
 		.then(result => {
 			vertexShaderSource = result;
@@ -9,11 +9,15 @@ function initWebGl() {
 		})
 		.then(result => {
 			fragmentShaderSource = result;
-			return loadMeshes('./obj/cube.obj');
+			return loadMeshes('./obj/darkDragon.obj');
 		})
 		.then(result => {
 			externalMesh = result.model;
-			return startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh);
+			return loadImage('./obj/darkDragon.jpg');
+		})
+		.then(result => {
+			externalTexture = result;
+			return startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh, externalTexture);
 		})
 		.catch(err => {
 			console.error(err);
@@ -21,7 +25,7 @@ function initWebGl() {
 }
 
 
-function startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh) {
+function startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh, externalTexture) {
 	canvas = document.getElementById('gl-canvas');
 	gl = canvas.getContext('webgl');
 
@@ -48,6 +52,8 @@ function startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh) {
 	program = createProgram(gl, vertexShader, fragmentShader);
 	gl.useProgram(program);	
 
+	externalMesh.externalTexture = externalTexture;
+
 	let a = new GlObject(externalMesh, program);
 
 	toDraw.push(a);
@@ -60,7 +66,7 @@ function loop() {
 	let angle = performance.now() / 1000 / 6 * 2 * Math.PI;
 	
 	toDraw.map(e => {
-		e.setRotation(0, angle/2, angle/4);
+		e.setRotation(0, 1.5, -angle/2);
 	});
 
 	toDraw.map(e => {

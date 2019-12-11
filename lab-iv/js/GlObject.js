@@ -6,16 +6,6 @@ class GlObject {
 		this.translation = [0, 0, 0];
 		this.scale = [1, 1, 1];
 		this.rotation = [0, 0, 0];
-		this.colors = [
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-		];
 
 		this.center = [0, 0, 0];
 		this.cameraPos = [0, 0, -13];
@@ -32,13 +22,25 @@ class GlObject {
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.mesh.vertices), gl.STATIC_DRAW);
 
-		this.colorBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors), gl.STATIC_DRAW);
+		this.texCoordBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.texCoordBuffer);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.mesh.textures), gl.STATIC_DRAW);
 
 		this.normalBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);				
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.mesh.vertexNormals), gl.STATIC_DRAW);
+
+		this.texture = gl.createTexture();
+		gl.bindTexture(gl.TEXTURE_2D, this.texture);
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.mesh.externalTexture);
+
+		gl.bindTexture(gl.TEXTURE_2D, null);
 
 		this.identity = new Float32Array(16);
 		this.worldMatrix = new Float32Array(16);
@@ -51,7 +53,7 @@ class GlObject {
 		glMatrix.mat4.identity(this.identity);
 
 		this.positionAttribLocation = gl.getAttribLocation(program, 'vertexPosition');
-		this.colorAttribLocation = gl.getAttribLocation(program, 'vertexColor');
+		this.texCoordAttribLocation = gl.getAttribLocation(program, 'vertexTexCoord');
 		this.normalAttribLocation = gl.getAttribLocation(program, 'vertexNormal');
 
 		this.matWorldUniformLocation = gl.getUniformLocation(program, 'matWorld');
@@ -93,16 +95,16 @@ class GlObject {
 		);
 		gl.enableVertexAttribArray(this.positionAttribLocation);
 
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.texCoordBuffer);
 		gl.vertexAttribPointer(
-			this.colorAttribLocation, // ссылка на атрибут
-			3, // кол-во элементов на 1 итерацию
+			this.texCoordAttribLocation, // ссылка на атрибут
+			this.mesh.textureStride, // кол-во элементов на 1 итерацию
 			gl.FLOAT, // тип данных
 			gl.FALSE, // нормализация
-			3 * Float32Array.BYTES_PER_ELEMENT, // элементов массива на одну вершину
+			this.mesh.textureStride * Float32Array.BYTES_PER_ELEMENT, // элементов массива на одну вершину
 			0 * Float32Array.BYTES_PER_ELEMENT // отступ для каждой вершины
 		);
-		gl.enableVertexAttribArray(this.colorAttribLocation);
+		gl.enableVertexAttribArray(this.texCoordAttribLocation);
 
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
 		gl.vertexAttribPointer(
@@ -130,6 +132,8 @@ class GlObject {
 
 
 		// gl.drawArrays(gl.TRIANGLES, 0, this.mesh.vertices.length / 3);
+		gl.bindTexture(gl.TEXTURE_2D, this.texture);
+		gl.activeTexture(gl.TEXTURE0);
 		gl.drawElements(gl.TRIANGLES, this.mesh.indices.length, gl.UNSIGNED_SHORT, 0);
 	}
 
