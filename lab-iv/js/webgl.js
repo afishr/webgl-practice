@@ -1,31 +1,31 @@
-var gl, program, canvas, toDraw = [];
+let gl, program, canvas, toDraw = [];
+let vertexShaderSource, fragmentShaderSource, externalMesh, externalTexture;
 
 function initWebGl() {
-	let vertexShaderSource, fragmentShaderSource, externalMesh, externalTexture;
 	loadResource('./shaders/vertexShader.glsl')
-		.then(result => {
-			vertexShaderSource = result;
-			return loadResource('./shaders/fragmentShader.glsl');
-		})
-		.then(result => {
-			fragmentShaderSource = result;
-			return loadMeshes('./obj/darkDragon.obj');
-		})
-		.then(result => {
-			externalMesh = result.model;
-			return loadImage('./obj/darkDragon.jpg');
-		})
-		.then(result => {
-			externalTexture = result;
-			return startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh, externalTexture);
-		})
-		.catch(err => {
-			console.error(err);
-		})
+	.then(result => {
+		vertexShaderSource = result;
+		return loadResource('./shaders/fragmentShader.glsl');
+	})
+	.then(result => {
+		fragmentShaderSource = result;
+		return loadMeshes('./obj/darkDragon.obj');
+	})
+	.then(result => {
+		externalMesh = result.model;
+		return loadImage('./obj/darkDragon.jpg');
+	})
+	.then(result => {
+		externalTexture = result;
+		return startWebGl();
+	})
+	.catch(err => {
+		console.error(err);
+	})
 }
 
 
-function startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh, externalTexture) {
+function startWebGl() {
 	canvas = document.getElementById('gl-canvas');
 	gl = canvas.getContext('webgl');
 
@@ -52,9 +52,7 @@ function startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh, exte
 	program = createProgram(gl, vertexShader, fragmentShader);
 	gl.useProgram(program);	
 
-	externalMesh.externalTexture = externalTexture;
-
-	let a = new GlObject(externalMesh, program);
+	let a = new GlObject(externalMesh, externalTexture, program);
 
 	toDraw.push(a);
 	loop();

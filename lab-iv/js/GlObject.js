@@ -1,7 +1,8 @@
 class GlObject {
-	constructor(mesh, program) {
+	constructor(mesh, texture, program) {
 		this.program = program;
 		this.mesh = mesh;
+		this.textureImg = texture;
 
 		this.translation = [0, 0, 0];
 		this.scale = [1, 1, 1];
@@ -38,7 +39,7 @@ class GlObject {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.mesh.externalTexture);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.textureImg);
 
 		gl.bindTexture(gl.TEXTURE_2D, null);
 
