@@ -63,10 +63,11 @@ function startWebGl(vertexShaderSource, fragmentShaderSource, externalMesh, exte
 function loop() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	
-	let angle = performance.now() / 1000 / 6 * 2 * Math.PI;
+	// let angle = performance.now() / 1000 / 6 * 2 * Math.PI;
 	
 	toDraw.map(e => {
-		e.setRotation(0, 1.5, -angle/2);
+		e.setRotation(rotY, rotX, 0);
+		e.setCameraPos(0, 0, movZ);
 	});
 
 	toDraw.map(e => {

@@ -8,7 +8,7 @@ class GlObject {
 		this.rotation = [0, 0, 0];
 
 		this.center = [0, 0, 0];
-		this.cameraPos = [0, 0, -13];
+		this.cameraPos = [0, 0, -10];
 		this.cameraRot = [0, 0, 0];
 		this.near = 0.1;
 		this.far = 1000.0;
@@ -147,5 +147,9 @@ class GlObject {
 
 	setRotation(x, y, z) {
 		this.rotation = [x, y, z];
+	}
+
+	setCameraPos(x, y, z) {
+		this.cameraPos = [x, y, z];
 	}
 }
