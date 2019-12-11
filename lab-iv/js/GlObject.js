@@ -127,8 +127,8 @@ class GlObject {
 		gl.uniform3f(this.spec0UniformLocation, ...mult( vec3(...toRGB('#ffffff')), vec3(...toRGB('#ffffff')) ));
 
 		gl.uniform3f(this.sunDirUniformLocation, 0, 0, -1);
-		gl.uniform1f(this.sunDisUniformLocation, 5);
-		gl.uniform1f(this.sunShiUniformLocation, 10);
+		gl.uniform1f(this.sunDisUniformLocation, 2);
+		gl.uniform1f(this.sunShiUniformLocation, 5);
 
 
 		// gl.drawArrays(gl.TRIANGLES, 0, this.mesh.vertices.length / 3);
