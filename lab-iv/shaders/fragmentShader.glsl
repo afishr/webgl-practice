@@ -20,7 +20,6 @@ varying vec3 fragPosition;
 
 
 void main(){
-
 	// vec3 lightIntensity = ambientLightIntesity + flashLight.color * max(dot(fragNormal, flashLight.direction), 0.0);
 
 	vec4 texel = texture2D(sampler, fragTexCoord);
